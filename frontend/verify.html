@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certificate Verification | InternFlow AI</title>
+  <link rel="stylesheet" href="/static/css/main.css">
+  <style>
+    body {
+      background-color: #F8FAFC;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .verify-container {
+      max-width: 760px;
+      margin: 40px auto;
+      padding: 0 20px;
+      width: 100%;
+      flex: 1;
+    }
+    .verify-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: var(--shadow-lg);
+    }
+    .verify-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .verify-badge.valid {
+      background: #ECFDF5;
+      color: #065F46;
+      border: 1px solid #A7F3D0;
+    }
+    .verify-badge.invalid {
+      background: #FEF2F2;
+      color: #991B1B;
+      border: 1px solid #FECACA;
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 24px;
+      padding: 20px;
+      background: #F8FAFC;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+    }
+    .meta-item-label {
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+    .meta-item-value {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP HEADER -->
+  <header style="background: #FFFFFF; border-bottom: 1px solid var(--border-color); padding: 16px 32px; display: flex; justify-content: space-between; align-items: center;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div class="brand-badge" style="background: var(--primary); color: white; width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800;">IF</div>
+      <div>
+        <div style="font-weight: 800; color: var(--primary); font-size: 16px;">InternFlow AI</div>
+        <div style="font-size: 11px; color: var(--text-muted);">Public Certificate Verification Authority</div>
+      </div>
+    </div>
+    <a href="/" class="btn btn-secondary btn-sm" style="text-decoration: none;">Return to Home</a>
+  </header>
+
+  <main class="verify-container">
+    <div class="verify-card">
+      <div style="text-align: center; margin-bottom: 28px;">
+        <div id="verify-badge-container">
+          <span class="verify-badge valid">
+            <span>●</span> Verifying Credential with Secure Database...
+          </span>
+        </div>
+        <h1 style="font-size: 26px; font-weight: 900; color: var(--primary); margin: 16px 0 6px;" id="verify-heading">
+          Certificate Authentication
+        </h1>
+        <p style="font-size: 13.5px; color: var(--text-muted);" id="verify-subheading">
+          Verifying cryptographic integrity and authority issuance records.
+        </p>
+      </div>
+
+      <div id="verify-details" style="display: none;">
+        <div style="text-align: center; padding-bottom: 20px; border-bottom: 1px solid var(--border-color);">
+          <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Recipient</div>
+          <div style="font-size: 24px; font-weight: 800; color: var(--text-main); margin-top: 4px;" id="v-name">-</div>
+          <div style="font-size: 13px; color: var(--primary); font-weight: 600; margin-top: 2px;" id="v-code">-</div>
+        </div>
+
+        <div class="meta-grid">
+          <div>
+            <div class="meta-item-label">Certificate Number</div>
+            <div class="meta-item-value" id="v-number" style="color: var(--primary); font-weight: 700;">-</div>
+          </div>
+          <div>
+            <div class="meta-item-label">Specialization Domain</div>
+            <div class="meta-item-value" id="v-domain">-</div>
+          </div>
+          <div>
+            <div class="meta-item-label">Issue Date</div>
+            <div class="meta-item-value" id="v-date">-</div>
+          </div>
+          <div>
+            <div class="meta-item-label">Performance Grade</div>
+            <div class="meta-item-value" id="v-grade" style="color: #065F46; font-weight: 700;">-</div>
+          </div>
+          <div style="grid-column: 1 / -1;">
+            <div class="meta-item-label">Verified Capstone Project</div>
+            <div class="meta-item-value" id="v-project" style="font-size: 13.5px;">-</div>
+          </div>
+          <div style="grid-column: 1 / -1;">
+            <div class="meta-item-label">Cryptographic Verification Hash</div>
+            <div class="meta-item-value" id="v-hash" style="font-family: monospace; font-size: 12px; word-break: break-all; color: var(--text-muted);">-</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 28px; display: flex; justify-content: center; gap: 14px;">
+          <a id="v-download-btn" href="#" class="btn btn-primary" target="_blank" style="text-decoration: none;">
+            📥 Download Official PDF Certificate
+          </a>
+          <button class="btn btn-secondary" onclick="window.print()">
+            🖨️ Print Verification
+          </button>
+        </div>
+      </div>
+
+      <div id="verify-error" style="display: none; text-align: center; padding: 20px 0;">
+        <div style="font-size: 48px; margin-bottom: 12px;">⚠️</div>
+        <p style="color: #991B1B; font-weight: 600;" id="verify-error-msg">Credential record not found.</p>
+        <p style="font-size: 12.5px; color: var(--text-muted); max-width: 460px; margin: 8px auto 20px;">
+          Please ensure the certificate number is entered correctly, or contact InternFlow AI administration for verification assistance.
+        </p>
+      </div>
+
+      <!-- Manual Lookup Form -->
+      <div style="margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--border-color);">
+        <form onsubmit="handleManualVerify(event)" style="display: flex; gap: 10px;">
+          <input type="text" id="manual-cert-input" class="form-control" placeholder="Enter Certificate ID (e.g. CERT-IF-0004-2026) or Hash..." required />
+          <button type="submit" class="btn btn-secondary" style="white-space: nowrap;">Verify Another</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer style="text-align: center; padding: 24px; font-size: 12px; color: var(--text-muted);">
+    InternFlow AI On-Premise Certification Engine &bull; Pure Local SQLite Database Integrity
+  </footer>
+
+  <script>
+    async function verifyCertificate(certId) {
+      const badgeBox = document.getElementById('verify-badge-container');
+      const detailsBox = document.getElementById('verify-details');
+      const errorBox = document.getElementById('verify-error');
+
+      badgeBox.innerHTML = '<span class="verify-badge valid"><span>●</span> Querying Authority Database...</span>';
+      detailsBox.style.display = 'none';
+      errorBox.style.display = 'none';
+
+      try {
+        const res = await fetch(`/api/v1/certificates/verify/${encodeURIComponent(certId)}`);
+        const data = await res.json();
+
+        if (res.ok && data.valid) {
+          badgeBox.innerHTML = '<span class="verify-badge valid">✓ Authentic Verified Certificate</span>';
+          document.getElementById('verify-heading').innerText = 'Credential Confirmed';
+          document.getElementById('verify-subheading').innerText = 'This certificate was officially issued by InternFlow AI Academy.';
+          
+          document.getElementById('v-name').innerText = data.intern_name;
+          document.getElementById('v-code').innerText = data.intern_code ? `Candidate ID: ${data.intern_code}` : '';
+          document.getElementById('v-number').innerText = data.certificate_number;
+          document.getElementById('v-domain').innerText = data.domain;
+          document.getElementById('v-date').innerText = data.issue_date;
+          document.getElementById('v-grade').innerText = `${data.grade} (${data.total_score}/100)`;
+          document.getElementById('v-project').innerText = data.capstone_project;
+          document.getElementById('v-hash').innerText = data.verification_hash;
+          document.getElementById('v-download-btn').href = data.download_url;
+
+          detailsBox.style.display = 'block';
+        } else {
+          badgeBox.innerHTML = '<span class="verify-badge invalid">✕ Unverified Certificate</span>';
+          document.getElementById('verify-heading').innerText = 'Verification Failed';
+          document.getElementById('verify-error-msg').innerText = data.detail || 'No record exists for this identifier.';
+          errorBox.style.display = 'block';
+        }
+      } catch (err) {
+        badgeBox.innerHTML = '<span class="verify-badge invalid">✕ Verification Error</span>';
+        document.getElementById('verify-error-msg').innerText = err.message;
+        errorBox.style.display = 'block';
+      }
+    }
+
+    function handleManualVerify(e) {
+      e.preventDefault();
+      const val = document.getElementById('manual-cert-input').value.trim();
+      if (val) {
+        verifyCertificate(val);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      // Extract from path e.g. /verify/CERT-IF-0004-2026 or from query ?id=
+      const parts = window.location.pathname.split('/').filter(Boolean);
+      let certId = parts.length > 1 ? parts[parts.length - 1] : null;
+      if (!certId || certId === 'verify') {
+        const params = new URLSearchParams(window.location.search);
+        certId = params.get('id') || params.get('cert');
+      }
+
+      if (certId && certId !== 'verify') {
+        document.getElementById('manual-cert-input').value = certId;
+        verifyCertificate(certId);
+      } else {
+        document.getElementById('verify-badge-container').innerHTML = '<span class="verify-badge valid" style="background: #EFF6FF; color: #1E3A8A; border-color: #BFDBFE;">Public Verification Portal</span>';
+        document.getElementById('verify-subheading').innerText = 'Enter a Certificate Number or verification hash below to confirm authenticity.';
+      }
+    });
+  </script>
+</body>
+</html>
+

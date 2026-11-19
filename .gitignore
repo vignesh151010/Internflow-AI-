@@ -1,0 +1,40 @@
+# Environment & Secrets
+.env
+.env.*
+!.env.example
+token.json
+credentials.json
+client_secret*.json
+
+# SQLite Database & Storage
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+data/internflow.db
+data/uploads/*
+!data/uploads/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Testing & Quality
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# IDE & OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo

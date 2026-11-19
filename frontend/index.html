@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InternFlow AI - Intelligent Internship Management & Automation</title>
+  <link rel="stylesheet" href="/static/css/main.css" />
+  <style>
+    :root {
+      --login-primary: #1E3A8A;
+      --login-secondary: #2563EB;
+      --login-accent: #3B82F6;
+      --login-gradient: linear-gradient(135deg, #0F172A 0%, #1E3A8A 50%, #1D4ED8 100%);
+      --login-card-radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body.login-page-body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 15% 20%, #1E293B 0%, #0F172A 50%, #030712 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient background glows */
+    .ambient-glow-1 {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(37, 99, 235, 0.25) 0%, rgba(37, 99, 235, 0) 70%);
+      top: -100px;
+      left: -100px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .ambient-glow-2 {
+      position: absolute;
+      width: 450px;
+      height: 450px;
+      background: radial-gradient(circle, rgba(249, 115, 22, 0.15) 0%, rgba(249, 115, 22, 0) 70%);
+      bottom: -100px;
+      right: -100px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Main two-column container */
+    .auth-container {
+      width: 100%;
+      max-width: 1040px;
+      min-height: 620px;
+      background: #FFFFFF;
+      border-radius: var(--login-card-radius);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+      display: flex;
+      overflow: hidden;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* ======================================================== */
+    /* LEFT SECTION: Large Blue Gradient Welcome Container     */
+    /* ======================================================== */
+    .auth-left-panel {
+      flex: 1.15;
+      background: var(--login-gradient);
+      padding: 56px 48px;
+      color: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Geometric decorative accents in left panel */
+    .auth-left-panel::before {
+      content: "";
+      position: absolute;
+      top: -120px;
+      right: -120px;
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .auth-left-panel::after {
+      content: "";
+      position: absolute;
+      bottom: -100px;
+      left: -80px;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, rgba(59, 130, 246, 0) 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .left-header {
+      position: relative;
+      z-index: 2;
+    }
+
+    .left-brand-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+
+    .left-logo-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+      color: #FFFFFF;
+      font-weight: 900;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(249, 115, 22, 0.4);
+    }
+
+    .left-platform-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.12);
+      padding: 4px 10px;
+      border-radius: 20px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #93C5FD;
+    }
+
+    .welcome-tag {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: #60A5FA;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .welcome-title {
+      font-size: 40px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1.1;
+      margin-bottom: 12px;
+      color: #FFFFFF;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .welcome-subtitle {
+      font-size: 16px;
+      font-weight: 600;
+      color: #DBEAFE;
+      line-height: 1.4;
+      margin-bottom: 18px;
+    }
+
+    .welcome-description {
+      font-size: 14px;
+      line-height: 1.65;
+      color: #BFDBFE;
+      max-width: 420px;
+      margin-bottom: 32px;
+    }
+
+    .left-features-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .left-feature-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13.5px;
+      color: #E0E7FF;
+      font-weight: 500;
+    }
+
+    .left-feature-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(37, 99, 235, 0.4);
+      border: 1px solid rgba(147, 197, 253, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #60A5FA;
+      font-size: 12px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .left-footer {
+      position: relative;
+      z-index: 2;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #93C5FD;
+    }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-dot-pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
+      animation: pulseGreen 2s infinite;
+    }
+
+    @keyframes pulseGreen {
+      0%, 100% { box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3); }
+      50% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.1); }
+    }
+
+    /* ======================================================== */
+    /* RIGHT SECTION: Clean White Login / Register Card        */
+    /* ======================================================== */
+    .auth-right-panel {
+      flex: 1.1;
+      background: #FFFFFF;
+      padding: 48px 44px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+
+    .auth-view {
+      display: none;
+      animation: fadeInAuth 0.25s ease forwards;
+    }
+
+    .auth-view.active {
+      display: block;
+    }
+
+    @keyframes fadeInAuth {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-header {
+      margin-bottom: 26px;
+    }
+
+    .form-heading {
+      font-size: 26px;
+      font-weight: 800;
+      color: #0F172A;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+
+    .form-subtitle {
+      font-size: 13.5px;
+      color: #64748B;
+      line-height: 1.5;
+    }
+
+    /* Alert Banner */
+    .auth-alert {
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.45;
+      margin-bottom: 20px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .auth-alert.error {
+      background: #FEF2F2;
+      border: 1px solid #FCA5A5;
+      color: #991B1B;
+      display: flex;
+    }
+
+    .auth-alert.success {
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+      color: #065F46;
+      display: flex;
+    }
+
+    .auth-alert.info {
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      color: #1E40AF;
+      display: flex;
+    }
+
+    /* Form Controls */
+    .form-field-group {
+      margin-bottom: 18px;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 7px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .text-input {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 14px;
+      color: #0F172A;
+      background: #F8FAFC;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    .text-input:focus {
+      background: #FFFFFF;
+      border-color: #2563EB;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .text-input::placeholder {
+      color: #94A3B8;
+    }
+
+    /* Password input with show/hide toggle */
+    .input-wrapper .text-input.has-toggle {
+      padding-right: 44px;
+    }
+
+    .toggle-password-btn {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      color: #64748B;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 4px 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      transition: color 0.15s ease;
+    }
+
+    .toggle-password-btn:hover {
+      color: #1E3A8A;
+    }
+
+    /* Options Row: Remember Me & Forgot Password */
+    .form-options-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+      font-size: 13px;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #475569;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .checkbox-label input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      accent-color: #2563EB;
+      cursor: pointer;
+    }
+
+    .forgot-link {
+      color: #2563EB;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .forgot-link:hover {
+      color: #1E3A8A;
+      text-decoration: underline;
+    }
+
+    /* Primary Action Button */
+    .auth-primary-btn {
+      width: 100%;
+      padding: 13px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: #FFFFFF;
+      background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .auth-primary-btn:hover {
+      background: linear-gradient(135deg, #172554 0%, #1D4ED8 100%);
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .auth-primary-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+    }
+
+    .auth-primary-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Bottom Switch Navigation */
+    .auth-switch-box {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 13.5px;
+      color: #64748B;
+    }
+
+    .auth-switch-link {
+      color: #2563EB;
+      font-weight: 700;
+      text-decoration: none;
+      margin-left: 4px;
+      cursor: pointer;
+      transition: color 0.15s ease;
+    }
+
+    .auth-switch-link:hover {
+      color: #1E3A8A;
+      text-decoration: underline;
+    }
+
+    /* Quick Demo Bar */
+    .demo-bar {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid #F1F5F9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .demo-btn {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      color: #475569;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .demo-btn:hover {
+      background: #EEF2F6;
+      border-color: #CBD5E1;
+      color: #1E293B;
+    }
+
+    /* Small spinner */
+    .spinner-sm {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #FFFFFF;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ======================================================== */
+    /* RESPONSIVE BREAKPOINTS                                   */
+    /* ======================================================== */
+    @media (max-width: 880px) {
+      .auth-container {
+        flex-direction: column;
+        max-width: 520px;
+        min-height: auto;
+      }
+
+      .auth-left-panel {
+        padding: 40px 32px 32px;
+      }
+
+      .welcome-title {
+        font-size: 32px;
+      }
+
+      .left-features-list {
+        display: none; /* Streamline on small viewports */
+      }
+
+      .auth-right-panel {
+        padding: 36px 32px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body.login-page-body {
+        padding: 12px;
+      }
+
+      .auth-container {
+        border-radius: 18px;
+      }
+
+      .auth-left-panel {
+        padding: 28px 22px 24px;
+      }
+
+      .welcome-title {
+        font-size: 26px;
+      }
+
+      .auth-right-panel {
+        padding: 28px 20px;
+      }
+
+      .form-heading {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body class="login-page-body">
+
+  <div class="ambient-glow-1"></div>
+  <div class="ambient-glow-2"></div>
+
+  <div class="auth-container">
+
+    <!-- ======================================================== -->
+    <!-- LEFT SECTION: Welcome & Brand Presentation               -->
+    <!-- ======================================================== -->
+    <div class="auth-left-panel">
+      <div class="left-header">
+        <div class="left-brand-row">
+          <div class="left-logo-badge">IF</div>
+          <div>
+            <span class="left-platform-tag">Enterprise Edition</span>
+          </div>
+        </div>
+
+        <span class="welcome-tag">WELCOME</span>
+        <h1 class="welcome-title">INTERNFLOW AI</h1>
+        <div class="welcome-subtitle">AI-Powered Intelligent Internship Management Platform.</div>
+        <p class="welcome-description">
+          Manage your internship journey with intelligent task management, personalized AI assistance and automated progress tracking.
+        </p>
+
+        <ul class="left-features-list">
+          <li class="left-feature-item">
+            <span class="left-feature-icon">✓</span>
+            <span>Personalized AI Curriculum & Weekly Roadmaps</span>
+          </li>
+          <li class="left-feature-item">
+            <span class="left-feature-icon">✓</span>
+            <span>Automated Task Scheduling & Google Meet Reviews</span>
+          </li>
+          <li class="left-feature-item">
+            <span class="left-feature-icon">✓</span>
+            <span>Automated Code Review & 9-Point AI Evaluation</span>
+          </li>
+          <li class="left-feature-item">
+            <span class="left-feature-icon">✓</span>
+            <span>Verified PDF Certificates with Embedded QR Codes</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="left-footer">
+        <div class="status-indicator">
+          <span class="status-dot-pulse"></span>
+          <span id="left-system-status">100% On-Premise & Local</span>
+        </div>
+        <span style="opacity: 0.8;">v3.0 Production</span>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- RIGHT SECTION: Interactive Forms                         -->
+    <!-- ======================================================== -->
+    <div class="auth-right-panel">
+
+      <!-- ====================================================== -->
+      <!-- VIEW 1: SIGN IN FORM                                    -->
+      <!-- ====================================================== -->
+      <div id="view-login" class="auth-view active">
+        <div class="form-header">
+          <h2 class="form-heading">Sign In</h2>
+          <p class="form-subtitle">Sign in to access your internship workspace.</p>
+        </div>
+
+        <div id="login-alert" class="auth-alert"></div>
+
+        <form id="login-form" onsubmit="handleLoginSubmit(event)" novalidate>
+          <div class="form-field-group">
+            <label class="field-label" for="login-email">Email Address</label>
+            <div class="input-wrapper">
+              <input
+                type="email"
+                id="login-email"
+                class="text-input"
+                required
+                autocomplete="email"
+                placeholder="Enter your email address."
+              />
+            </div>
+          </div>
+
+          <div class="form-field-group">
+            <label class="field-label" for="login-password">Password</label>
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="login-password"
+                class="text-input has-toggle"
+                required
+                autocomplete="current-password"
+                placeholder="Enter your password."
+              />
+              <button
+                type="button"
+                class="toggle-password-btn"
+                onclick="togglePasswordVisibility('login-password', this)"
+                aria-label="Toggle password visibility"
+              >
+                👁
+              </button>
+            </div>
+          </div>
+
+          <div class="form-options-row">
+            <label class="checkbox-label">
+              <input type="checkbox" id="login-remember" />
+              <span>Remember Me</span>
+            </label>
+            <a href="javascript:void(0)" class="forgot-link" onclick="switchView('forgot')">
+              Forgot Password?
+            </a>
+          </div>
+
+          <button type="submit" id="btn-login-submit" class="auth-primary-btn">
+            <span>SIGN IN</span>
+          </button>
+        </form>
+
+        <div class="auth-switch-box">
+          <span>Don't have an account?</span>
+          <a class="auth-switch-link" href="javascript:void(0)" onclick="switchView('register')">
+            Create Account
+          </a>
+        </div>
+
+        <!-- Quick Demo Helpers for Mentors / Evaluators -->
+        <div class="demo-bar">
+          <span style="font-size: 11px; color: #94A3B8; font-weight: 600;">DEMO LOGIN:</span>
+          <button type="button" class="demo-btn" onclick="quickFillAdmin()">
+            Admin
+          </button>
+          <button type="button" class="demo-btn" onclick="quickFillIntern()">
+            Intern
+          </button>
+          <button type="button" class="demo-btn" onclick="switchView('activate')">
+            Invite Code
+          </button>
+        </div>
+      </div>
+
+      <!-- ====================================================== -->
+      <!-- VIEW 2: NEW USER REGISTRATION                           -->
+      <!-- ====================================================== -->
+      <div id="view-register" class="auth-view">
+        <div class="form-header">
+          <h2 class="form-heading">CREATE YOUR ACCOUNT</h2>
+          <p class="form-subtitle">Create your personal intern profile to begin your journey.</p>
+        </div>
+
+        <div id="register-alert" class="auth-alert"></div>
+
+        <form id="register-form" onsubmit="handleRegisterSubmit(event)" novalidate>
+          <div class="form-field-group">
+            <label class="field-label" for="reg-name">User Name</label>
+            <div class="input-wrapper">
+              <input
+                type="text"
+                id="reg-name"
+                class="text-input"
+                required
+                autocomplete="name"
+                placeholder="Enter your full name."
+              />
+            </div>
+          </div>
+
+          <div class="form-field-group">
+            <label class="field-label" for="reg-email">Email Address</label>
+            <div class="input-wrapper">
+              <input
+                type="email"
+                id="reg-email"
+                class="text-input"
+                required
+                autocomplete="email"
+                placeholder="Enter your email address."
+              />
+            </div>
+          </div>
+
+          <div class="form-field-group">
+            <label class="field-label" for="reg-password">Password</label>
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="reg-password"
+                class="text-input has-toggle"
+                required
+                autocomplete="new-password"
+                placeholder="Create a password."
+              />
+              <button
+                type="button"
+                class="toggle-password-btn"
+                onclick="togglePasswordVisibility('reg-password', this)"
+                aria-label="Toggle password visibility"
+              >
+                👁
+              </button>
+            </div>
+          </div>
+
+          <div class="form-field-group">
+            <label class="field-label" for="reg-confirm-password">Confirm Password</label>
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="reg-confirm-password"
+                class="text-input has-toggle"
+                required
+                autocomplete="new-password"
+                placeholder="Re-enter your password."
+              />
+              <button
+                type="button"
+                class="toggle-password-btn"
+                onclick="togglePasswordVisibility('reg-confirm-password', this)"
+                aria-label="Toggle confirm password visibility"
+              >
+                👁
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" id="btn-register-submit" class="auth-primary-btn" style="margin-top: 8px;">
+            <span>CREATE ACCOUNT</span>
+          </button>
+        </form>
+
+        <div class="auth-switch-box">
+          <span>Already have an account?</span>
+          <a class="auth-switch-link" href="javascript:void(0)" onclick="switchView('login')">
+            Sign In
+          </a>
+        </div>
+      </div>
+
+      <!-- ====================================================== -->
+      <!-- VIEW 3: FORGOT PASSWORD                                 -->
+      <!-- ====================================================== -->
+      <div id="view-forgot" class="auth-view">
+        <div class="form-header">
+          <h2 class="form-heading">RESET PASSWORD</h2>
+          <p class="form-subtitle">Enter your registered email to update your account password.</p>
+        </div>
+
+        <div id="forgot-alert" class="auth-alert"></div>
+
+        <form id="forgot-form" onsubmit="handleForgotSubmit(event)" novalidate>
+          <div class="form-field-group">
+            <label class="field-label" for="forgot-email">Email Address</label>
+            <div class="input-wrapper">
+              <input
+                type="email"
+                id="forgot-email"
+                class="text-input"
+                required
+                autocomplete="email"
+                placeholder="Enter your registered email address."
+              />
+            </div>
+          </div>
+
+          <div class="form-field-group">
+            <label class="field-label" for="forgot-new-password">New Password</label>
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="forgot-new-password"
+                class="text-input has-toggle"
+                required
+                placeholder="Enter new password (min. 6 characters)."
+              />
+              <button
+                type="button"
+                class="toggle-password-btn"
+                onclick="togglePasswordVisibility('forgot-new-password', this)"
+                aria-label="Toggle password visibility"
+              >
+                👁
+              </button>
+            </div>
+          </div>
+
+          <div class="form-field-group">
+            <label class="field-label" for="forgot-confirm-password">Confirm New Password</label>
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="forgot-confirm-password"
+                class="text-input has-toggle"
+                required
+                placeholder="Re-enter new password."
+              />
+              <button
+                type="button"
+                class="toggle-password-btn"
+                onclick="togglePasswordVisibility('forgot-confirm-password', this)"
+                aria-label="Toggle password visibility"
+              >
+                👁
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" id="btn-forgot-submit" class="auth-primary-btn" style="margin-top: 8px;">
+            <span>RESET PASSWORD</span>
+          </button>
+        </form>
+
+        <div class="auth-switch-box">
+          <span>Remember your password?</span>
+          <a class="auth-switch-link" href="javascript:void(0)" onclick="switchView('login')">
+            Sign In
+          </a>
+        </div>
+      </div>
+
+      <!-- ====================================================== -->
+      <!-- VIEW 4: ACTIVATE INVITATION TOKEN                      -->
+      <!-- ====================================================== -->
+      <div id="view-activate" class="auth-view">
+        <div class="form-header">
+          <h2 class="form-heading">ACTIVATE INVITE</h2>
+          <p class="form-subtitle">Enter your official invitation token to set up your password.</p>
+        </div>
+
+        <div id="activate-alert" class="auth-alert"></div>
+
+        <form id="activate-form" onsubmit="handleActivationSubmit(event)" novalidate>
+          <div class="form-field-group">
+            <label class="field-label" for="act-token">Invitation Token</label>
+            <div class="input-wrapper">
+              <input
+                type="text"
+                id="act-token"
+                class="text-input"
+                required
+                placeholder="e.g. 7f8b9c2a1e..."
+              />
+            </div>
+          </div>
+
+          <div class="form-field-group">
+            <label class="field-label" for="act-password">Choose New Password</label>
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="act-password"
+                class="text-input has-toggle"
+                required
+                placeholder="Create a password (min. 6 characters)."
+              />
+              <button
+                type="button"
+                class="toggle-password-btn"
+                onclick="togglePasswordVisibility('act-password', this)"
+              >
+                👁
+              </button>
+            </div>
+          </div>
+
+          <div class="form-field-group">
+            <label class="field-label" for="act-confirm">Confirm Password</label>
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="act-confirm"
+                class="text-input has-toggle"
+                required
+                placeholder="Re-enter password."
+              />
+              <button
+                type="button"
+                class="toggle-password-btn"
+                onclick="togglePasswordVisibility('act-confirm', this)"
+              >
+                👁
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" id="btn-activate-submit" class="auth-primary-btn" style="margin-top: 8px;">
+            <span>ACTIVATE & SIGN IN</span>
+          </button>
+        </form>
+
+        <div class="auth-switch-box">
+          <a class="auth-switch-link" href="javascript:void(0)" onclick="switchView('login')">
+            ← Back to Sign In
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="/static/js/api.js"></script>
+  <script>
+    // ========================================================
+    // View Switcher (Sign In / Register / Forgot / Activate)
+    // ========================================================
+    function switchView(viewName) {
+      // Clear alert banners
+      hideAlert('login-alert');
+      hideAlert('register-alert');
+      hideAlert('forgot-alert');
+      hideAlert('activate-alert');
+
+      document.querySelectorAll('.auth-view').forEach(v => v.classList.remove('active'));
+
+      const target = document.getElementById(`view-${viewName}`);
+      if (target) {
+        target.classList.add('active');
+      }
+    }
+
+    // ========================================================
+    // Show / Hide Password Toggles
+    // ========================================================
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.innerText = '🙈';
+        btn.setAttribute('aria-label', 'Hide password');
+      } else {
+        input.type = 'password';
+        btn.innerText = '👁';
+        btn.setAttribute('aria-label', 'Show password');
+      }
+    }
+
+    // ========================================================
+    // Alert Banner Helpers
+    // ========================================================
+    function showAlert(elementId, message, type = 'error') {
+      const alert = document.getElementById(elementId);
+      if (!alert) return;
+      alert.className = `auth-alert ${type}`;
+      alert.innerHTML = `<span>${type === 'success' ? '✓' : type === 'info' ? 'ℹ' : '⚠'}</span> <span>${message}</span>`;
+      alert.style.display = 'flex';
+    }
+
+    function hideAlert(elementId) {
+      const alert = document.getElementById(elementId);
+      if (alert) {
+        alert.style.display = 'none';
+        alert.innerText = '';
+      }
+    }
+
+    // ========================================================
+    // Email Validation Helper
+    // ========================================================
+    function isValidEmail(email) {
+      const re = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+      return re.test(String(email).toLowerCase());
+    }
+
+    // ========================================================
+    // 1. SIGN IN SUBMISSION
+    // ========================================================
+    async function handleLoginSubmit(e) {
+      e.preventDefault();
+      hideAlert('login-alert');
+
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      const remember = document.getElementById('login-remember').checked;
+      const btn = document.getElementById('btn-login-submit');
+
+      // Validation
+      if (!email) {
+        showAlert('login-alert', 'Please enter your email address.', 'error');
+        document.getElementById('login-email').focus();
+        return;
+      }
+      if (!isValidEmail(email)) {
+        showAlert('login-alert', 'Please enter a valid email address.', 'error');
+        document.getElementById('login-email').focus();
+        return;
+      }
+      if (!password) {
+        showAlert('login-alert', 'Please enter your password.', 'error');
+        document.getElementById('login-password').focus();
+        return;
+      }
+
+      // UI Loading state
+      btn.disabled = true;
+      btn.innerHTML = `<span class="spinner-sm"></span> <span>SIGNING IN...</span>`;
+
+      try {
+        const res = await api.post('/auth/login', { email, password });
+        
+        // Handle Remember Me
+        if (remember) {
+          localStorage.setItem('internflow_remember_email', email);
+        } else {
+          localStorage.removeItem('internflow_remember_email');
+        }
+
+        api.setAuth(res.access_token, res);
+        showAlert('login-alert', `Welcome back, ${res.name}! Redirecting to workspace...`, 'success');
+
+        setTimeout(() => {
+          if (res.role === 'admin') {
+            window.location.href = '/admin';
+          } else {
+            window.location.href = '/intern';
+          }
+        }, 500);
+
+      } catch (err) {
+        showAlert('login-alert', err.message || 'Incorrect email address or password.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>SIGN IN</span>`;
+      }
+    }
+
+    // ========================================================
+    // 2. REGISTRATION SUBMISSION
+    // ========================================================
+    async function handleRegisterSubmit(e) {
+      e.preventDefault();
+      hideAlert('register-alert');
+
+      const full_name = document.getElementById('reg-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const password = document.getElementById('reg-password').value;
+      const confirm_password = document.getElementById('reg-confirm-password').value;
+      const btn = document.getElementById('btn-register-submit');
+
+      // Comprehensive frontend validation
+      if (!full_name) {
+        showAlert('register-alert', 'Please enter your full name.', 'error');
+        document.getElementById('reg-name').focus();
+        return;
+      }
+      if (full_name.length < 2) {
+        showAlert('register-alert', 'User Name must be at least 2 characters long.', 'error');
+        document.getElementById('reg-name').focus();
+        return;
+      }
+
+      if (!email) {
+        showAlert('register-alert', 'Please enter your email address.', 'error');
+        document.getElementById('reg-email').focus();
+        return;
+      }
+      if (!isValidEmail(email)) {
+        showAlert('register-alert', 'Please enter a valid email format (e.g. name@example.com).', 'error');
+        document.getElementById('reg-email').focus();
+        return;
+      }
+
+      if (!password) {
+        showAlert('register-alert', 'Please create a password.', 'error');
+        document.getElementById('reg-password').focus();
+        return;
+      }
+      if (password.length < 6) {
+        showAlert('register-alert', 'Password must be at least 6 characters long.', 'error');
+        document.getElementById('reg-password').focus();
+        return;
+      }
+
+      if (!confirm_password) {
+        showAlert('register-alert', 'Please confirm your password.', 'error');
+        document.getElementById('reg-confirm-password').focus();
+        return;
+      }
+      if (password !== confirm_password) {
+        showAlert('register-alert', 'Passwords do not match. Please re-enter identical passwords.', 'error');
+        document.getElementById('reg-confirm-password').focus();
+        return;
+      }
+
+      // UI Loading state
+      btn.disabled = true;
+      btn.innerHTML = `<span class="spinner-sm"></span> <span>CREATING ACCOUNT...</span>`;
+
+      try {
+        const res = await api.post('/auth/register', {
+          full_name,
+          email,
+          password,
+          confirm_password
+        });
+
+        showAlert('register-alert', res.message || 'Account successfully created! Redirecting to Sign In...', 'success');
+
+        // Reset form
+        document.getElementById('register-form').reset();
+
+        // Populate email in login form & switch view after 1.5s
+        setTimeout(() => {
+          switchView('login');
+          document.getElementById('login-email').value = email;
+          document.getElementById('login-password').focus();
+          showAlert('login-alert', 'Account created! Please sign in with your password.', 'success');
+        }, 1500);
+
+      } catch (err) {
+        showAlert('register-alert', err.message || 'Registration failed. Please try again.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>CREATE ACCOUNT</span>`;
+      }
+    }
+
+    // ========================================================
+    // 3. FORGOT PASSWORD SUBMISSION
+    // ========================================================
+    async function handleForgotSubmit(e) {
+      e.preventDefault();
+      hideAlert('forgot-alert');
+
+      const email = document.getElementById('forgot-email').value.trim();
+      const new_password = document.getElementById('forgot-new-password').value;
+      const confirm_password = document.getElementById('forgot-confirm-password').value;
+      const btn = document.getElementById('btn-forgot-submit');
+
+      if (!email) {
+        showAlert('forgot-alert', 'Please enter your registered email address.', 'error');
+        return;
+      }
+      if (!isValidEmail(email)) {
+        showAlert('forgot-alert', 'Please enter a valid email address.', 'error');
+        return;
+      }
+      if (!new_password || new_password.length < 6) {
+        showAlert('forgot-alert', 'New password must be at least 6 characters long.', 'error');
+        return;
+      }
+      if (new_password !== confirm_password) {
+        showAlert('forgot-alert', 'Passwords do not match.', 'error');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = `<span class="spinner-sm"></span> <span>RESETTING PASSWORD...</span>`;
+
+      try {
+        const res = await api.post('/auth/reset-password', {
+          email,
+          new_password
+        });
+        showAlert('forgot-alert', res.message || 'Password updated successfully!', 'success');
+        setTimeout(() => {
+          switchView('login');
+          document.getElementById('login-email').value = email;
+          showAlert('login-alert', 'Password reset! Please sign in with your new password.', 'success');
+        }, 1800);
+      } catch (err) {
+        showAlert('forgot-alert', err.message || 'Password reset request failed.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>RESET PASSWORD</span>`;
+      }
+    }
+
+    // ========================================================
+    // 4. INVITATION TOKEN ACTIVATION SUBMISSION
+    // ========================================================
+    async function handleActivationSubmit(e) {
+      e.preventDefault();
+      hideAlert('activate-alert');
+
+      const token = document.getElementById('act-token').value.trim();
+      const password = document.getElementById('act-password').value;
+      const confirm_password = document.getElementById('act-confirm').value;
+      const btn = document.getElementById('btn-activate-submit');
+
+      if (!token) {
+        showAlert('activate-alert', 'Please enter your invitation token.', 'error');
+        return;
+      }
+      if (!password || password.length < 6) {
+        showAlert('activate-alert', 'Password must be at least 6 characters long.', 'error');
+        return;
+      }
+      if (password !== confirm_password) {
+        showAlert('activate-alert', 'Passwords do not match.', 'error');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = `<span class="spinner-sm"></span> <span>ACTIVATING...</span>`;
+
+      try {
+        const res = await api.post('/auth/setup-password', {
+          invitation_token: token,
+          password: password,
+          confirm_password: confirm_password
+        });
+        api.setAuth(res.access_token, res);
+        showAlert('activate-alert', 'Account activated! Entering workspace...', 'success');
+        setTimeout(() => {
+          window.location.href = '/intern';
+        }, 700);
+      } catch (err) {
+        showAlert('activate-alert', err.message || 'Activation failed.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>ACTIVATE & SIGN IN</span>`;
+      }
+    }
+
+    // ========================================================
+    // Demo Autofill Helpers
+    // ========================================================
+    function quickFillAdmin() {
+      switchView('login');
+      document.getElementById('login-email').value = 'admin@internflow.ai';
+      document.getElementById('login-password').value = 'Admin@123';
+      showAlert('login-alert', 'Admin credentials loaded. Click "SIGN IN" to enter.', 'info');
+    }
+
+    function quickFillIntern() {
+      switchView('login');
+      document.getElementById('login-email').value = 'aarav.sharma@example.com';
+      document.getElementById('login-password').value = 'Intern@0001';
+      showAlert('login-alert', 'Demo intern credentials loaded. Click "SIGN IN" to enter.', 'info');
+    }
+
+    // ========================================================
+    // Page Initialization
+    // ========================================================
+    window.addEventListener('DOMContentLoaded', async () => {
+      // 1. Populate remembered email if present
+      const rememberedEmail = localStorage.getItem('internflow_remember_email');
+      if (rememberedEmail) {
+        const emailInput = document.getElementById('login-email');
+        const rememberCheckbox = document.getElementById('login-remember');
+        if (emailInput) emailInput.value = rememberedEmail;
+        if (rememberCheckbox) rememberCheckbox.checked = true;
+      }
+
+      // 2. Redirect if already authenticated
+      const user = api.getUser();
+      const token = api.getToken();
+      if (token && user) {
+        if (user.role === 'admin') {
+          window.location.href = '/admin';
+          return;
+        } else if (user.role === 'intern') {
+          window.location.href = '/intern';
+          return;
+        }
+      }
+
+      // 3. Optional local AI status indicator check
+      try {
+        const res = await api.get('/ollama/status');
+        const statusEl = document.getElementById('left-system-status');
+        if (statusEl && res.connected) {
+          statusEl.innerText = `Local AI Active (${res.available_models.length} Models)`;
+        }
+      } catch (err) {
+        // Fallback silently
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "include": [
+    "backend",
+    "tests",
+    "run.py"
+  ],
+  "extraPaths": [
+    "./backend"
+  ],
+  "typeCheckingMode": "basic"
+}
+
